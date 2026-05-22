@@ -1,0 +1,30 @@
+name: Proteger cierre de misiones
+
+on:
+  issues:
+    types:
+      - closed
+      - reopened
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  reabrir-cierre-manual:
+    name: Reabrir cierres manuales
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Proteger cierre automático
+        run: npm run guard:manual-close
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

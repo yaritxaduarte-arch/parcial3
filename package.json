@@ -1,0 +1,21 @@
+{
+  "name": "gitflow-html-exam-template",
+  "version": "1.0.0",
+  "description": "Repositorio plantilla para un examen de Git Flow con una pagina HTML existente.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "create:initial-issues": "node scripts/create-initial-issues.js",
+    "create:next-issue": "node scripts/create-next-issue.js",
+    "guard:manual-close": "node scripts/guard-manual-issue-close.js",
+    "validate:progress": "node scripts/validate-progress.js",
+    "validate:html": "node scripts/validate-html.js",
+    "validate:gitflow": "node scripts/validate-gitflow.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2"
+  }
+}

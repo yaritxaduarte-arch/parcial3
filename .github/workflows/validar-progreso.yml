@@ -1,0 +1,48 @@
+name: Validar progreso de misiones
+
+on:
+  create:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+      - closed
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  validar-progreso:
+    name: Revisar misión activa
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Obtener ramas remotas
+        run: git fetch --prune origin '+refs/heads/*:refs/remotes/origin/*'
+
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias de validación
+        run: npm ci
+
+      - name: Validar progreso y comentar issue
+        run: npm run validate:progress
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
